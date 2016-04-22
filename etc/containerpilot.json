@@ -1,0 +1,14 @@
+{
+    "consul": "{{ .CONSUL_ADDRESS }}",
+    "preStart": "python /usr/local/bin/rethinkdb-health.py",
+    "services": [
+	{
+	    "name": "rethinkdb",
+	    "port": 28015,
+	    "interfaces": ["eth0"],
+	    "health": "python /usr/local/bin/rethinkdb-health.py health",
+	    "poll": 1,
+	    "ttl": 5
+	}
+    ]
+}

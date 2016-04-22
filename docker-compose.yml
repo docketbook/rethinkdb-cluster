@@ -1,0 +1,43 @@
+version: '2'
+services:
+    consul:
+        image: gliderlabs/consul-server
+        labels:
+        - "triton.cns.services=discovery"
+        ports:
+        - "8500:8500"
+        expose:
+        - "8500"
+        command: -server -bootstrap
+        extra_hosts:
+        - "discovery.development.services.docketbook.io:${DISCOVERY_ADDRESS}"
+
+    rethinkdb:
+        image: rethinkdb-node
+        mem_limit: 4g
+        restart: always
+        # expose for linking, but each container gets a private IP for
+        # internal use as well
+        expose:
+        - 8000
+        - 29015
+        - 28015
+        ports:
+            - "28015:28015"
+            - "29015:29015"
+            - "8000:8080"
+        dns:
+        - 8.8.8.8
+        - 8.8.4.4
+        # labels:
+        #  - triton.cns.services=rethinkdb
+        env_file: _env
+        extra_hosts:
+        - "discovery.development.services.docketbook.io:8500"
+        environment:
+         - CONTAINERPILOT=file:///etc/containerpilot.json
+         - CONSUL_ADDRESS=discovery.development.services.docketbook.io
+networks:
+  default:
+    external:
+      name: docketbook
