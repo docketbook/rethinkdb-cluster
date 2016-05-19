@@ -3,7 +3,7 @@
     "preStart": "python /usr/local/bin/rethinkdb-health.py",
     "services": [
 	{
-	    "name": "rethinkdb",
+	    "name": "{{ .SERVICE_NAME }}",
 	    "port": 28015,
 	    "interfaces": ["eth0"],
 	    "health": "python /usr/local/bin/rethinkdb-health.py health",
