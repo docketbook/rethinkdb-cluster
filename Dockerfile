@@ -31,6 +31,10 @@ ENTRYPOINT []
 
 EXPOSE 29015 28015 8080
 
+VOLUME ["/data"]
+
+WORKDIR /data
+
 # use --console to get error logs to stderr
 CMD [ "containerpilot", \
       "rethinkdb", \
