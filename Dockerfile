@@ -1,15 +1,12 @@
-FROM docketbook/rethinkdb-alpine:2.3.2
+FROM rethinkdb:2.3.2
 MAINTAINER Tom Midson <tm@docketbook.io>
 
 USER root
 
-RUN set -x \
-        && apk add --no-cache --virtual .build-deps \
-        python \
-        python-dev \
-        py-pip \
-        build-base \
-        && pip install rethinkdb python-Consul requests
+RUN set -x \ 
+    && apt-get update \
+    && apt-get install -y python python-pip curl \
+    && pip install rethinkdb python-Consul requests
 
 # Add ContainerPilot and set its configuration file path
 ENV CONTAINERPILOT_VER 2.1.2
