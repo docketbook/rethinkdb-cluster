@@ -117,9 +117,8 @@ def get_nodes(timeout=10):
             services = curr[1]['Services']
             healthy = []
             for v in checks:
-                if 'rethink' in v['Name'] and v['Status'] == 'passing':
+                if os.environ.get('SERVICE_NAME') in v['Name'] and v['Status'] == 'passing':
                     healthy.append(v['Name']);
-
             nodes = [ v['Address'] for k,v in services.items() if 'rethinkdb' in k and k in healthy]
             if len(nodes) > 0:
                 log.debug('not primary - run config with joins')
