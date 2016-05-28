@@ -5,8 +5,7 @@ USER root
 
 RUN set -x \ 
     && apt-get update \
-    && apt-get install -y python python-pip curl \
-    && pip install rethinkdb python-Consul requests
+    && apt-get install -y curl
 
 # Add ContainerPilot and set its configuration file path
 ENV CONTAINERPILOT_VER 2.1.2
@@ -17,11 +16,14 @@ RUN export CONTAINERPILOT_CHECKSUM=c31333047d58ba09d647d717ae1fc691133db6eb \
         "https://github.com/joyent/containerpilot/releases/download/${CONTAINERPILOT_VER}/containerpilot-${CONTAINERPILOT_VER}.tar.gz" \
     && echo "${CONTAINERPILOT_CHECKSUM}  /tmp/containerpilot.tar.gz" | sha1sum -c \
     && tar zxf /tmp/containerpilot.tar.gz -C /usr/local/bin \
-    && rm /tmp/containerpilot.tar.gz
+    && rm /tmp/containerpilot.tar.gz \
+    && curl -Lso /tmp/rethinkdb-health.tar.gz \ 
+        "https://github.com/docketbook/rethinkdb-containerpilot-health/releases/download/0.1/rethinkdb-health-0.1-linux.tar.gz" \
+    && tar zxf /tmp/rethinkdb-health.tar.gz -C /usr/local/bin \
+    && rm /tmp/rethinkdb-health.tar.gz
 
-# configure ContainerPilot and MySQL
+# configure ContainerPilot and RethinkDB
 COPY etc/* /etc/
-COPY bin/* /usr/local/bin/
 
 # override the parent entrypoint
 ENTRYPOINT []
