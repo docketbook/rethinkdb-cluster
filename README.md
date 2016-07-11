@@ -11,6 +11,7 @@ Implements the auto-pilot pattern for RethinkDB. The container will automaticall
 This image can utilise the following variables
 
 * ```CONSUL_ADDRESS``` sets the address of the Consul instance to register against. This should be in the form of ```hostname:8500``` such as ```discovery.provider.com:8500```. 
+* ```CONSUL_ENVIRONMENT``` sets the tag to apply to the service registration with Consul
 * ```SERVICE_NAME``` the name of the service that will be registered into Consul.
 
 ## Important Ports

@@ -1,14 +1,15 @@
 {
     "consul": "{{ .CONSUL_ADDRESS }}",
     "preStart": "/usr/local/bin/rethinkdb-health prestart",
-    "services": [
-	{
+    "services": [{
 	    "name": "{{ .SERVICE_NAME }}",
 	    "port": 28015,
 	    "interfaces": ["eth0"],
 	    "health": "/usr/local/bin/rethinkdb-health",
 	    "poll": 1,
-	    "ttl": 5
-	}
-    ]
+	    "ttl": 5,
+	    "tags": [
+			"{{.CONSUL_ENVIRONMENT}}"
+		]
+	}]
 }
