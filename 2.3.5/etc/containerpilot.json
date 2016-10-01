@@ -1,0 +1,28 @@
+{
+    "consul": "localhost:8500",
+    "preStart": "/usr/local/bin/rethinkdb-health prestart",
+    "services": [{
+	    "name": "{{ .SERVICE_NAME }}",
+	    "port": 28015,
+	    "interfaces": ["eth0"],
+	    "health": "/usr/local/bin/rethinkdb-health",
+	    "poll": 1,
+	    "ttl": 5,
+	    "tags": [
+			"{{.CONSUL_ENVIRONMENT}}"
+		]
+	}],
+	"coprocesses": [{
+		"command":[
+			"consul", 
+    		"agent",
+            "-data-dir=/consul-data",
+            "-config-dir=/config",
+            "-rejoin",
+            "-retry-join", "{{ .CONSUL_ADDRESS }}",
+            "-retry-max", "10",
+            "-retry-interval", "10s"
+        ],
+		"restarts": "unlimited"
+	}]
+}
